@@ -40,9 +40,16 @@ t = map(timezone.localize,mydata.newdate) #now all have a timezone
 t = ts.from_datetimes(t)
 position = ISS.at(t)
 
-lat, lon = wgs84.latlon_of(position)
-mydata["lat"]=lat.degrees
-mydata["lon"]=lon.degrees
+# does not work on Astropi since it has an old library
+#lat, lon = wgs84.latlon_of(position) #astropi has an old version of library
+#mydata["lat"]=lat.degrees
+#mydata["lon"]=lon.degrees
+
+#on astropi use me
+loc = position.subpoint()
+mydata["lat"]= loc.latitude.degrees
+mydata["lon"]= loc.longitude.degrees
+
 
 
 import plotly.express as px
