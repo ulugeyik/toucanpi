@@ -1,0 +1,12 @@
+#2022/01/21 Added by Turgut for next time to see how to visualize
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import numpy as np
+import pandas as pd
+
+mydata = pd.read_csv('../data/data20220121.csv', parse_dates={ 'newdate': ['Date/time'] })
+
+
+
+plt.figure()
+plt.plot(testdata.newdate,testdata.Temperature)
