@@ -4,7 +4,7 @@ import matplotlib.dates as mdates
 import numpy as np
 import pandas as pd
 
-mydata = pd.read_csv('../data/data20220121.csv', parse_dates={ 'newdate': ['Date/time'] })
+mydata = pd.read_csv('../data/toucandata_20220128_172125.csv', parse_dates={ 'newdate': ['Date/time'] })
 
 
 
@@ -17,7 +17,7 @@ plt.gca().xaxis.set_major_formatter(formatter)
 plt.show()
 
 plt.figure()
-plt.plot(mydata.newdate,mydata.AccelerationTotal)
+plt.plot(mydata.newdate,mydata.AccelerationZ)
 locator = mdates.AutoDateLocator()
 formatter = mdates.ConciseDateFormatter(locator)
 plt.gca().xaxis.set_major_locator(locator)
