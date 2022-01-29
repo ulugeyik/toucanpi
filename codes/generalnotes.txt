@@ -1,0 +1,25 @@
+#04/02/2022
+#Sat Jan 29 19:42:27 CET 2022 official date of computer
+time python3 toucanpitask320220128.py
+
+real	30m2.529s
+user	0m11.118s
+sys	0m32.260s
+
+No logging here this was at the thread 
+sleep(1800) #sleep XXX seconds and everything should finish
+so we are approximately 2 minutes off.
+
+304 files were written
+goal was 1800/4 = 360 files. some were missed but not a lot
+
+toucandata_20220129_191036.csv
+304 lines of data was written
+it takes approximately 6 seconds per line
+1800/4 = 300 so we are close
+
+1.2 Gb of photos + csv file
+1234100
+
+TOO BIG FOR HALF HOUR!
+

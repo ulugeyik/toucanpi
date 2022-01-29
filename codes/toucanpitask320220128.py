@@ -14,6 +14,7 @@ from time import sleep #we all need some rest
 from sense_hat import SenseHat  #this is what we use to sense
 import csv # this one is for saving to files in csv
 from threading import Thread #to run the code for a set time
+from logzero import logger, logfile #suggested by AstroPi Guide
 
 #to make our life simpler with a shorter name
 toucanhat=SenseHat()
@@ -121,17 +122,17 @@ def maintask():
         writer.writerow(header)
         counter=1 #create a counter to know what we did
         while True:
-            toucanhat.clear([120, 0, 100])
+            toucanhat.clear([120, 0, 100]) #TODO: Remove from final program
             pic_filename = datetime.now().strftime("%Y%m%d_%H%M%S.jpg")
             pic_path = f"{base_folder}/toucanphoto_{pic_filename}"
             capture(cam,pic_path)
-            print("Recorded %s" % pic_filename)
+            print("%d Recorded %s" % (counter, pic_filename)) #TODO: Remove from final program
             row = sensedata(toucanhat,counter)
-            writer.writerow(row)
+            writer.writerow(row) #TODO: We may need to flush after this, check time
             counter+=1 #increase counter
-            sleep(2.5)
-            toucanhat.clear([0, 0, 0])
-            sleep(2.5)
+            sleep(2.5) #TODO: Fix duration
+            toucanhat.clear([0, 0, 0]) #TODO: Remove from final program
+            sleep(2.5) #TODO: Remove from final program
 
     
 ##############################################
@@ -146,20 +147,21 @@ def maintask():
 base_folder = Path(__file__).parent.resolve()
 
 #This is the header to be used for the csv file
-header = ("Date/Time", "OrientPitch", "OrientRoll", "OrientYaw", "MagnetX", "MagnetY", "MagnetZ", "GyroX", "GyroY", "GyroZ", "AccX", "AccY", "AccZ", "Lat", "Long")
+header = ("Counter", "Date/Time", "OrientPitch", "OrientRoll", "OrientYaw", "MagnetX", "MagnetY", "MagnetZ", "GyroX", "GyroY", "GyroZ", "AccX", "AccY", "AccZ", "Lat", "Long")
 
 #Give the name of our data file
-data_filename = datetime.now().strftime("%Y%m%d_%H%M%S.csv")
-data_file = f"{base_folder}/toucandata_{data_filename}"
+data_filename = datetime.now().strftime("%Y%m%d_%H%M%S")
+data_file = f"{base_folder}/toucandata_{data_filename}.csv"
 
+# Set a logfile name
+logfile(f"{base_folder}/toucanevents_{data_filename}.log")
 
 #Initialize sensors and camera
 
 #start with the camera
 cam = PiCamera()
-cam.resolution = (1296,972) #TODO: adjust to the HQ camera resolution
-# TODO: find out why I Can not use this resolution
-#cam.resolution = (4056,3040) #highest resolution, this is the one from example on flickr
+#cam.resolution = (1296,972) #low resolution option
+cam.resolution = (4056,3040) #highest resolution, this is the one from example on flickr
 
 #We are following a suggestion to use daemon threads to execute code
 t= Thread(target=maintask)
@@ -168,9 +170,13 @@ t.daemon = True
 ##############################################
 #The following is a way to catch errors.
 try:
-    print('Start')
+    print('Start') #TODO: Remove from final program
+    logger.info("Start") # Log event
     t.start() #run the main task
-    sleep(24) #sleep XXX seconds and everything should finish
-    toucanhat.clear([0, 0, 0])
+    sleep(1800) #sleep XXX seconds and everything should finish
+    toucanhat.clear([0, 0, 0]) #TODO: Remove from final program
 except KeyboardInterrupt:
-    print('Quit')
+    print('Quit') #TODO: Remove from final program
+    logger.info("Quit") # Log event
+except Exception as e:
+        logger.error(f'{e.__class__.__name__}: {e}')
