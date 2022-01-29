@@ -13,6 +13,7 @@ from datetime import datetime #to know the correct date and write to file
 from time import sleep #we all need some rest
 from sense_hat import SenseHat  #this is what we use to sense
 import csv # this one is for saving to files in csv
+from threading import Thread #to run the code for a set time
 
 #to make our life simpler with a shorter name
 toucanhat=SenseHat()
@@ -100,6 +101,33 @@ def sensedata(hat):
 
     return outdata
 
+
+def maintask(): 
+        #The following is a way to catch errors.
+        try:
+            print('Start')
+            #To show us that program is ready
+            toucanhat.show_message("Show time!")
+    
+           
+            #open the file
+            with open(data_file, 'w', buffering=1) as f:
+                writer = csv.writer(f)
+                writer.writerow(header)
+                while True:
+                    toucanhat.clear([120, 0, 100])
+                    pic_filename = datetime.now().strftime("%Y%m%d_%H%M%S.jpg")
+                    pic_path = f"{base_folder}/toucanphoto_{pic_filename}"
+                    capture(cam,pic_path)
+                    print("Recorded %s" % pic_filename)
+                    row = sensedata(toucanhat)
+                    writer.writerow(row)
+                    sleep(2.5)
+                    toucanhat.clear([0, 0, 0])
+                    sleep(2.5)
+        except KeyboardInterrupt:
+            print('Quit')
+
     
 ##############################################
 
@@ -124,39 +152,15 @@ data_file = f"{base_folder}/toucandata_{data_filename}"
 
 #start with the camera
 cam = PiCamera()
-#cam.resolution = (1296,972) #TODO: adjust to the HQ camera resolution
-cam.resolution = (4056,3040) #highest resolution, this is the one from example on flickr
+cam.resolution = (1296,972) #TODO: adjust to the HQ camera resolution
+# TODO: find out why I Can not use this resolution
+#cam.resolution = (4056,3040) #highest resolution, this is the one from example on flickr
 
-#TODO: Is this necessary?
-#IMU sensor
-#Enable compass, gyroscope, accelerometer
-toucanhat.set_imu_config(True, True, True)  
-
-
+#We are following a suggestion to use daemon threads to execute code
+t= Thread(target=maintask)
+t.daemon = True
 
 ##############################################
 
-#The following is a way to catch errors.
-try:
-    print('Start')
-    #To show us that program is ready
-    toucanhat.show_message("Show time!")
-
-   
-    #open the file
-    with open(data_file, 'w', buffering=1) as f:
-        writer = csv.writer(f)
-        writer.writerow(header)
-        while True:
-            hat.clear([120, 0, 100])
-            pic_filename = datetime.now().strftime("%Y%m%d_%H%M%S.jpg")
-            pic_path = f"{base_folder}/toucanphoto_{pic_filename}"
-            capture(cam,pic_path)
-            print("Recorded %s" % pic_filename)
-            row = sensedata(toucanhat)
-            writer.writerow(row)
-            sleep(2.5)
-            hat.clear([0, 0, 0])
-            sleep(2.5)
-except KeyboardInterrupt:
-    print('Quit')
+t.start() #run the main task
+sleep(60) #sleep XXX seconds and everything should finish
