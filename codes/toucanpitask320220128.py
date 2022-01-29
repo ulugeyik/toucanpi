@@ -63,70 +63,75 @@ def capture(camera, image):
     camera.capture(image)
 
 #This is what we want to sense from the sensehat
-def sensedata(hat):
+def sensedata(hat,counter):
     """Get and organize the sensor data from sensehat.
        Based on https://pythonhosted.org/sense-hat/api/#environmental-sensors
        Input: hat , sensehat info
       Output: Formatted string for output to csv file
     """
     #NOTE: Can we do a more elegant solution with f-strings?
-    
-    #get the time
-    outdata = datetime.now()
+
     #Gets the current orientation in radians, aircraft pitch, roll and yaw.
     orient = hat.get_orientation_radians()
-    outdata= outdata + (orient["pitch"],orient["roll"],orient["yaw"])
-    #print("p: {pitch}, r: {roll}, y: {yaw}".format(**orientation_rad))
+   # outdata= (outdata, orient["pitch"],orient["roll"],orient["yaw"])
 
     #Gets the raw x, y and z axis magnetometer data.
     magnet = hat.get_compass_raw()
-    outdata= outdata + (magnet["x"],magnet["y"],magnet["z"])
-    #print("x: {x}, y: {y}, z: {z}".format(**raw))
+   # outdata= (outdata, magnet["x"],magnet["y"],magnet["z"])
     
     #Gets the raw x, y and z axis gyroscope data.
     #NOTE: Not sure this versus orientation ?
     gyro = hat.get_gyroscope_raw()
-    outdata= outdata + (gyro["x"],gyro["y"],gyro["z"])
-    #print("x: {x}, y: {y}, z: {z}".format(**raw))
-
+   # outdata= (outdata, gyro["x"],gyro["y"],gyro["z"])
+ 
     #Gets the raw x, y and z axis accelerometer data.
     acc = hat.get_accelerometer_raw()
-    outdata= outdata + (acc["x"],acc["y"],acc["z"])
-    #print("x: {x}, y: {y}, z: {z}".format(**raw))
-
+   # outdata= (outdata, acc["x"],acc["y"],acc["z"])
+ 
     #Add the ISS position, for redundancy
-    point = ISS.coordinates()
-    outdata= outdata + (point.latitude, point.longitude)
+    location = ISS.coordinates()
+   # outdata= (outdata, point.latitude, point.longitude)
     #TODO: Check if I should add E, W etc.
+    outdata = (
+        counter,
+        datetime.now(),
+        round(orient["pitch"],4),
+        round(orient["roll"],4),
+        round(orient["yaw"],4),
+        round(magnet["x"],4),
+        round(magnet["y"],4),
+        round(magnet["z"],4),
+        round(gyro["x"],4),
+        round(gyro["y"],4),
+        round(gyro["z"],4),
+        round(acc["x"],4),
+        round(acc["y"],4),
+        round(acc["z"],4),
+        round(location.latitude.degrees,4),
+        round(location.longitude.degrees,4),
+    )
 
     return outdata
 
-
-def maintask(): 
-        #The following is a way to catch errors.
-        try:
-            print('Start')
-            #To show us that program is ready
-            toucanhat.show_message("Show time!")
-    
-           
-            #open the file
-            with open(data_file, 'w', buffering=1) as f:
-                writer = csv.writer(f)
-                writer.writerow(header)
-                while True:
-                    toucanhat.clear([120, 0, 100])
-                    pic_filename = datetime.now().strftime("%Y%m%d_%H%M%S.jpg")
-                    pic_path = f"{base_folder}/toucanphoto_{pic_filename}"
-                    capture(cam,pic_path)
-                    print("Recorded %s" % pic_filename)
-                    row = sensedata(toucanhat)
-                    writer.writerow(row)
-                    sleep(2.5)
-                    toucanhat.clear([0, 0, 0])
-                    sleep(2.5)
-        except KeyboardInterrupt:
-            print('Quit')
+ 
+def maintask():  
+#open the file
+    with open(data_file, 'w', buffering=1) as f:
+        writer = csv.writer(f)
+        writer.writerow(header)
+        counter=1 #create a counter to know what we did
+        while True:
+            toucanhat.clear([120, 0, 100])
+            pic_filename = datetime.now().strftime("%Y%m%d_%H%M%S.jpg")
+            pic_path = f"{base_folder}/toucanphoto_{pic_filename}"
+            capture(cam,pic_path)
+            print("Recorded %s" % pic_filename)
+            row = sensedata(toucanhat,counter)
+            writer.writerow(row)
+            counter+=1 #increase counter
+            sleep(2.5)
+            toucanhat.clear([0, 0, 0])
+            sleep(2.5)
 
     
 ##############################################
@@ -161,6 +166,11 @@ t= Thread(target=maintask)
 t.daemon = True
 
 ##############################################
-
-t.start() #run the main task
-sleep(60) #sleep XXX seconds and everything should finish
+#The following is a way to catch errors.
+try:
+    print('Start')
+    t.start() #run the main task
+    sleep(24) #sleep XXX seconds and everything should finish
+    toucanhat.clear([0, 0, 0])
+except KeyboardInterrupt:
+    print('Quit')
