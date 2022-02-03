@@ -124,8 +124,8 @@ data_file = f"{base_folder}/toucandata_{data_filename}"
 
 #start with the camera
 cam = PiCamera()
-cam.resolution = (1296,972) #TODO: adjust to the HQ camera resolution
-#cam.resolution = (4050,3040) #highest resolution
+#cam.resolution = (1296,972) #TODO: adjust to the HQ camera resolution
+cam.resolution = (4056,3040) #highest resolution, this is the one from example on flickr
 
 #TODO: Is this necessary?
 #IMU sensor
