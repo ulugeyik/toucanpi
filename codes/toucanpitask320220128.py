@@ -171,7 +171,7 @@ t.daemon = True
 try:
     logger.info("Start") # Log event
     t.start() #run the main task
-    sleep(600) #sleep XXX seconds and everything should finish
+    sleep(10700) #sleep 10800, 3 hours seconds and everything should finish
 except KeyboardInterrupt:
     logger.info("Quit") # Log event
 except Exception as e:
