@@ -122,17 +122,17 @@ def maintask():
         writer.writerow(header)
         counter=1 #create a counter to know what we did
         while True:
-            toucanhat.clear([120, 0, 100]) #TODO: Remove from final program
-            pic_filename = datetime.now().strftime("%Y%m%d_%H%M%S.jpg")
-            pic_path = f"{base_folder}/toucanphoto_{pic_filename}"
-            capture(cam,pic_path)
-            print("%d Recorded %s" % (counter, pic_filename)) #TODO: Remove from final program
             row = sensedata(toucanhat,counter)
             writer.writerow(row) #TODO: We may need to flush after this, check time
+            if not counter%5: #too many photos, let's do this every 5th data entry
+               pic_filename = datetime.now().strftime("%Y%m%d_%H%M%S.jpg")
+               pic_path = f"{base_folder}/toucanphoto_{pic_filename}"
+               capture(cam,pic_path)
+               logger.info(f"Count {counter} file {pic_filename}")
+            else :
+               logger.info(f"Count {counter}") 
             counter+=1 #increase counter
-            sleep(2.5) #TODO: Fix duration
-            toucanhat.clear([0, 0, 0]) #TODO: Remove from final program
-            sleep(2.5) #TODO: Remove from final program
+            sleep(5) #TODO: Fix duration, it takes 1 second extra approx
 
     
 ##############################################
@@ -170,13 +170,10 @@ t.daemon = True
 ##############################################
 #The following is a way to catch errors.
 try:
-    print('Start') #TODO: Remove from final program
     logger.info("Start") # Log event
     t.start() #run the main task
     sleep(1800) #sleep XXX seconds and everything should finish
-    toucanhat.clear([0, 0, 0]) #TODO: Remove from final program
 except KeyboardInterrupt:
-    print('Quit') #TODO: Remove from final program
     logger.info("Quit") # Log event
 except Exception as e:
         logger.error(f'{e.__class__.__name__}: {e}')
