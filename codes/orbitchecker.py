@@ -20,5 +20,7 @@ point = ISS.coordinates()
     # Convert the latitude and longitude to EXIF-appropriate representations
 south, exif_latitude = convert(point.latitude)
 west, exif_longitude = convert(point.longitude)
-point.latitude.degrees
-point.longitude.degrees
+print(point.latitude.degrees)
+print(point.longitude.degrees)
+print(exif_latitude)
+print(exif_longitude)

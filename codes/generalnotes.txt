@@ -42,3 +42,33 @@ Ground point
 
 Orbital speed
 
+--
+new run
+real	30m1.976s
+user	0m5.650s
+sys	0m9.149s
+we are within 2 seconds of 30 minutes
+343 lines were recorded
+1800/5 should be 360 but close enough
+300 Mb data
+that 1.8 Gb for 3 hours approximately
+we would be well within.
+
+latitude and longitude do not match the web site very well.
+
+I think we may have a problem with UTC ?
+
+it works on a PC so the time problems of this computer/OS is the issue for sure. Probably it is okay.
+
+
+Toucan Pi class 2022/02/04
+real	10m2.041s
+user	0m2.778s
+sys	0m3.740s
+
+took only 23 pictures even though every 25 should be 24 pictures.
+size extrapolation gives us ~2.1 Gb we had 118 Mb of data from 10 minutes.
+So we are safe even if we do not miss any.
+
+
+

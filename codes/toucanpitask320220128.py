@@ -16,30 +16,27 @@ import csv # this one is for saving to files in csv
 from threading import Thread #to run the code for a set time
 from logzero import logger, logfile #suggested by AstroPi Guide
 
-#to make our life simpler with a shorter name
-toucanhat=SenseHat()
 ##############################################
 
 ##############################################
 #Define our functions
 ##############################################
 
-#This is from Astropi documentation
 def convert(angle):
-    """
+    """   
     Convert a `skyfield` Angle to an EXIF-appropriate
     representation (rationals)
     e.g. 98° 34' 58.7 to "98/1,34/1,587/10"
 
     Return a tuple containing a boolean and the converted angle,
     with the boolean indicating if the angle is negative.
+    
+    This is from Astropi documentation.
     """
     sign, degrees, minutes, seconds = angle.signed_dms()
     exif_angle = f'{degrees:.0f}/1,{minutes:.0f}/1,{seconds*10:.0f}/10'
     return sign < 0, exif_angle
 
-#This is from Astropi documentation
-#To capture a frame from the camera and add exif info with ISS location
 def capture(camera, image):
     """Use `camera` to capture an `image` file with lat/long EXIF data.
        Note: "three timestamp tags: IFD0.DateTime,
@@ -47,7 +44,9 @@ def capture(camera, image):
        default.  YYYY:MM:DD HH:MM:SS 
        Info from:
        https://picamera.readthedocs.io/en/release-1.10/api_camera.html#picamera.camera.PiCamera.exif_tags
-    """
+      This is from Astropi documentation
+      To capture a frame from the camera and add exif info with ISS location
+"""
     point = ISS.coordinates()
 
     # Convert the latitude and longitude to EXIF-appropriate representations
@@ -67,32 +66,29 @@ def capture(camera, image):
 def sensedata(hat,counter):
     """Get and organize the sensor data from sensehat.
        Based on https://pythonhosted.org/sense-hat/api/#environmental-sensors
-       Input: hat , sensehat info
+       Input: hat , sensehat info, counter current number of data
       Output: Formatted string for output to csv file
     """
     #NOTE: Can we do a more elegant solution with f-strings?
 
     #Gets the current orientation in radians, aircraft pitch, roll and yaw.
     orient = hat.get_orientation_radians()
-   # outdata= (outdata, orient["pitch"],orient["roll"],orient["yaw"])
 
     #Gets the raw x, y and z axis magnetometer data.
     magnet = hat.get_compass_raw()
-   # outdata= (outdata, magnet["x"],magnet["y"],magnet["z"])
     
     #Gets the raw x, y and z axis gyroscope data.
     #NOTE: Not sure this versus orientation ?
     gyro = hat.get_gyroscope_raw()
-   # outdata= (outdata, gyro["x"],gyro["y"],gyro["z"])
  
     #Gets the raw x, y and z axis accelerometer data.
     acc = hat.get_accelerometer_raw()
-   # outdata= (outdata, acc["x"],acc["y"],acc["z"])
  
     #Add the ISS position, for redundancy
     location = ISS.coordinates()
-   # outdata= (outdata, point.latitude, point.longitude)
     #TODO: Check if I should add E, W etc.
+
+    #TODO: can we know the altitude of ISS?
     outdata = (
         counter,
         datetime.now(),
@@ -142,6 +138,9 @@ def maintask():
 ##############################################
 #Preparatory actions
 
+#TODO: consider a simpler name
+toucanhat=SenseHat()
+
 #AstroPi requires that files are all saved on the same folder as the code
 #Get this information
 base_folder = Path(__file__).parent.resolve()
@@ -172,7 +171,7 @@ t.daemon = True
 try:
     logger.info("Start") # Log event
     t.start() #run the main task
-    sleep(1800) #sleep XXX seconds and everything should finish
+    sleep(600) #sleep XXX seconds and everything should finish
 except KeyboardInterrupt:
     logger.info("Quit") # Log event
 except Exception as e:
