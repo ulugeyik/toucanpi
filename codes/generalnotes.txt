@@ -8,7 +8,7 @@ sys	0m32.260s
 
 No logging here this was at the thread 
 sleep(1800) #sleep XXX seconds and everything should finish
-so we are approximately 2 minutes off.
+so we are approximately 2 seconds off.
 
 304 files were written
 goal was 1800/4 = 360 files. some were missed but not a lot
@@ -24,3 +24,21 @@ it takes approximately 6 seconds per line
 TOO BIG FOR HALF HOUR!
 
 check latitude longitude with astroviewer.net/iss/en
+
+tried a sleep(360)
+real	6m2.073s
+user	0m2.146s
+sys	0m4.383s
+
+lost two files and 2 seconds
+34 files
+11 seconds between writes instead of 10 seconds
+
+
+
+Ground point
+51.52° North
+55.78° East
+
+Orbital speed
+
