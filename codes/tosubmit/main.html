@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module main</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>main</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/pi/Desktop/ToucanPiGeneral/toucanpi/codes/tosubmit/main.py">/home/pi/Desktop/ToucanPiGeneral/toucanpi/codes/tosubmit/main.py</a></font></td></tr></table>
+    <p><tt>ToucanPi&nbsp;Team&nbsp;<br>
+Members:&nbsp;Gaia,&nbsp;Iris,&nbsp;Tom<br>
+Mentor:&nbsp;Turgut&nbsp;Durduran<br>
+Location:&nbsp;Castelldefels,&nbsp;Spain<br>
+&nbsp;<br>
+Description&nbsp;of&nbsp;the&nbsp;code:<br>
+&nbsp;<br>
+This&nbsp;code&nbsp;consists&nbsp;of&nbsp;recording&nbsp;data&nbsp;from&nbsp;these&nbsp;sensors:<br>
+Orientation,&nbsp;magnetometer,&nbsp;gyroscope&nbsp;and&nbsp;accelerometer.<br>
+We&nbsp;use&nbsp;many&nbsp;libraries&nbsp;including:<br>
+orbit,&nbsp;picamera,&nbsp;pathlib,&nbsp;datetime,&nbsp;time,&nbsp;sense_hat,&nbsp;csv,&nbsp;threading&nbsp;and&nbsp;logzero.<br>
+&nbsp;<br>
+We&nbsp;used&nbsp;daemon&nbsp;threads&nbsp;to&nbsp;make&nbsp;sure&nbsp;our&nbsp;program&nbsp;finishes&nbsp;on&nbsp;time.<br>
+We&nbsp;used&nbsp;a&nbsp;few&nbsp;functions&nbsp;to&nbsp;read&nbsp;our&nbsp;sensors&nbsp;and&nbsp;to&nbsp;store&nbsp;the&nbsp;data.<br>
+We&nbsp;will&nbsp;take&nbsp;pictures&nbsp;every&nbsp;25&nbsp;seconds&nbsp;to&nbsp;calculate&nbsp;the&nbsp;velocity&nbsp;of&nbsp;the&nbsp;ISS.<br>
+Our&nbsp;main&nbsp;goal&nbsp;is&nbsp;to&nbsp;prove&nbsp;that&nbsp;the&nbsp;gravity&nbsp;is&nbsp;not&nbsp;actually&nbsp;0&nbsp;in&nbsp;space,&nbsp;even&nbsp;though&nbsp;everything&nbsp;is&nbsp;always&nbsp;floating.<br>
+&nbsp;<br>
+Our&nbsp;test&nbsp;run&nbsp;shows&nbsp;that&nbsp;the&nbsp;code&nbsp;runs&nbsp;for&nbsp;less&nbsp;than&nbsp;3&nbsp;hours&nbsp;and&nbsp;generates&nbsp;about&nbsp;2&nbsp;Gb&nbsp;of&nbsp;data.<br>
+&nbsp;<br>
+Here&nbsp;are&nbsp;the&nbsp;ouputs&nbsp;from&nbsp;shell&nbsp;script:<br>
+&nbsp;<br>
+&gt;time&nbsp;python3&nbsp;main.py&nbsp;<br>
+real&nbsp;178m22.015s<br>
+user&nbsp;0m28.314s<br>
+sys&nbsp;0m53.728s<br>
+&nbsp;<br>
+&gt;&nbsp;du&nbsp;-h<br>
+2.0G</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="csv.html">csv</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-capture"><strong>capture</strong></a>(camera, image)</dt><dd><tt>Use&nbsp;`camera`&nbsp;to&nbsp;capture&nbsp;an&nbsp;`image`&nbsp;file&nbsp;with&nbsp;lat/long&nbsp;EXIF&nbsp;data.<br>
+&nbsp;Note:&nbsp;"three&nbsp;timestamp&nbsp;tags:&nbsp;IFD0.DateTime,<br>
+&nbsp;EXIF.DateTimeOriginal,&nbsp;and&nbsp;EXIF.DateTimeDigitized"&nbsp;are&nbsp;added&nbsp;by<br>
+&nbsp;default.&nbsp;&nbsp;YYYY:MM:DD&nbsp;HH:MM:SS&nbsp;<br>
+&nbsp;Info&nbsp;from:<br>
+&nbsp;https://picamera.readthedocs.io/en/release-1.10/api_camera.html#picamera.camera.PiCamera.exif_tags<br>
+This&nbsp;is&nbsp;from&nbsp;Astropi&nbsp;documentation<br>
+To&nbsp;capture&nbsp;a&nbsp;frame&nbsp;from&nbsp;the&nbsp;camera&nbsp;and&nbsp;add&nbsp;exif&nbsp;info&nbsp;with&nbsp;ISS&nbsp;location</tt></dd></dl>
+ <dl><dt><a name="-convert"><strong>convert</strong></a>(angle)</dt><dd><tt>Convert&nbsp;a&nbsp;`skyfield`&nbsp;Angle&nbsp;to&nbsp;an&nbsp;EXIF-appropriate<br>
+representation&nbsp;(rationals)<br>
+e.g.&nbsp;98°&nbsp;34'&nbsp;58.7&nbsp;to&nbsp;"98/1,34/1,587/10"<br>
+&nbsp;<br>
+Return&nbsp;a&nbsp;tuple&nbsp;containing&nbsp;a&nbsp;boolean&nbsp;and&nbsp;the&nbsp;converted&nbsp;angle,<br>
+with&nbsp;the&nbsp;boolean&nbsp;indicating&nbsp;if&nbsp;the&nbsp;angle&nbsp;is&nbsp;negative.<br>
+&nbsp;<br>
+This&nbsp;is&nbsp;from&nbsp;Astropi&nbsp;documentation.</tt></dd></dl>
+ <dl><dt><a name="-maintask"><strong>maintask</strong></a>()</dt><dd><tt>This&nbsp;function&nbsp;is&nbsp;used&nbsp;to&nbsp;open&nbsp;our&nbsp;datafile&nbsp;during&nbsp;the&nbsp;program&nbsp;and&nbsp;record&nbsp;our&nbsp;data.</tt></dd></dl>
+ <dl><dt><a name="-sensedata"><strong>sensedata</strong></a>(hat, counter)</dt><dd><tt>Get&nbsp;and&nbsp;organize&nbsp;the&nbsp;sensor&nbsp;data&nbsp;from&nbsp;sensehat.<br>
+&nbsp;Based&nbsp;on&nbsp;https://pythonhosted.org/sense-hat/api/#environmental-sensors<br>
+&nbsp;Input:&nbsp;hat&nbsp;,&nbsp;sensehat&nbsp;info,&nbsp;counter&nbsp;current&nbsp;number&nbsp;of&nbsp;data<br>
+Output:&nbsp;Formatted&nbsp;string&nbsp;for&nbsp;output&nbsp;to&nbsp;csv&nbsp;file</tt></dd></dl>
+ <dl><dt><a name="-sleep"><strong>sleep</strong></a>(...)</dt><dd><tt><a href="#-sleep">sleep</a>(seconds)<br>
+&nbsp;<br>
+Delay&nbsp;execution&nbsp;for&nbsp;a&nbsp;given&nbsp;number&nbsp;of&nbsp;seconds.&nbsp;&nbsp;The&nbsp;argument&nbsp;may&nbsp;be<br>
+a&nbsp;floating&nbsp;point&nbsp;number&nbsp;for&nbsp;subsecond&nbsp;precision.</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>ISS</strong> = &lt;EarthSatellite ISS (ZARYA) catalog #25544 epoch 2022-01-21 13:47:57 UTC&gt;<br>
+<strong>base_folder</strong> = PosixPath('/home/pi/Desktop/ToucanPiGeneral/toucanpi/codes/tosubmit')<br>
+<strong>cam</strong> = &lt;picamera.camera.PiCamera object&gt;<br>
+<strong>data_file</strong> = '/home/pi/Desktop/ToucanPiGeneral/toucanpi/codes/tosubmit/toucandata_20220211_164555.csv'<br>
+<strong>data_filename</strong> = '20220211_164555'<br>
+<strong>header</strong> = ('Counter', 'Date/Time', 'OrientPitch', 'OrientRoll', 'OrientYaw', 'MagnetX', 'MagnetY', 'MagnetZ', 'GyroX', 'GyroY', 'GyroZ', 'AccX', 'AccY', 'AccZ', 'Lat', 'Long')<br>
+<strong>logger</strong> = &lt;Logger logzero_default (DEBUG)&gt;<br>
+<strong>t</strong> = &lt;Thread(Thread-1, started daemon 2882507872)&gt;<br>
+<strong>toucanhat</strong> = &lt;sense_hat.sense_hat.SenseHat object&gt;</td></tr></table>
+</body></html>
