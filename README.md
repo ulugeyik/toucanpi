@@ -14,4 +14,8 @@
     Pi foundation.
 - toucanpiISSdata1.ipynb : Google Collaboratory notebook of calculations/codes.
 
+## TO-DO
 
+- Place final report.
+- Figure out how to share the data.
+- Figure out how to share the Python notebook.
