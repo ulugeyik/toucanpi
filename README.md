@@ -1,10 +1,12 @@
-# toucanpi
-ToucanPi Team AstroPi project
+# Toucanpi
+ToucanPi Team AstroPi project for 2021-2022.
+Mentor: Turgut Durduran.
+Students: Gaia, Iris and Tom.
+Self-organized team with Year 6 ("Toucans") students from British School of Barcelona (Castelldefels, Spain).
 
 ## Structure
 
-- data : we copy data here. It is *not* saved to this folder
-  originally.
+- tosubmit : Submitted codes & documentation.
 - code : We copy codes here. Data is saved *here*.
 - info: We store information here.
 
