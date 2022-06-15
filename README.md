@@ -6,11 +6,12 @@
 
 ## Structure
 
-- tosubmit : Submitted codes & documentation.
-- code : We copy codes here. Data is saved *here*.
-- info: We store information here.
+- code/submit : Submitted codes.
+- info:
+  - 'ToucanPi AstroPi challenge proposal 2021.pdf': Submitted
+  proposal.
+  - 'ToucanPi Story 03_2022.pdf' : Interview questions for Raspberry
+    Pi foundation.
+- toucanpiISSdata1.ipynb : Google Collaboratory notebook of calculations/codes.
 
-## Useful links
-[[https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax][Github
-Markdown Info]]
-[[https://linuxconfig.org/introductory-tutorial-to-git-on-linux][GitHub Usage Info]]
+
