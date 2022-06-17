@@ -14,10 +14,6 @@
     Pi foundation.
 - toucanpiISSdata1.ipynb : Google Collaboratory notebook of calculations/codes.
 - toucandata_20220513_201103.csv : The data that was logged at ISS.
-- Photos are available upon request.
-
-## TO-DO
-
-- Place final report.
-- Figure out how to share the data.
-- Figure out how to share the Python notebook.
+- Flight photos are available upon request.
+- Astro_Pi_Mission_Space_Lab_Phase_4_Final_Report_2021_22_ToucanPi_Team.pdf:
+  final report.
