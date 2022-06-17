@@ -13,6 +13,8 @@
   - 'ToucanPi Story 03_2022.pdf' : Interview questions for Raspberry
     Pi foundation.
 - toucanpiISSdata1.ipynb : Google Collaboratory notebook of calculations/codes.
+- toucandata_20220513_201103.csv : The data that was logged at ISS.
+- Photos are available upon request.
 
 ## TO-DO
 
